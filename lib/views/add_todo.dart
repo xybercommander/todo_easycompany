@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_easycompany/data/helper/shared_preferences.dart';
 import 'package:todo_easycompany/data/providers/todo_provider.dart';
 import 'package:todo_easycompany/views/todo_list.dart';
 
@@ -61,11 +64,9 @@ class _AddTodoState extends State<AddTodo> {
                             ),
                             MaterialButton(
                               onPressed: () {
-                                if(toBeCompletedOn == DateTime.now()) {
-                                  setState(() {
-                                    dateChosen = true;
-                                  });
-                                }
+                                setState(() {
+                                  dateChosen = true;
+                                });
                                 Navigator.pop(context);
                               },
                               color: Colors.black,
@@ -134,12 +135,17 @@ class _AddTodoState extends State<AddTodo> {
                 onPressed: () async {
                   Map<String, dynamic> task = {
                     "task": taskController.text,
-                    "setDate": setDate,
-                    "toBeCompletedOn": toBeCompletedOn,
-                    "priority": priority,
+                    "setDate": setDate.toString(),
+                    "toBeCompletedOn": toBeCompletedOn.toString(),
+                    "priority": priority.toString(),
                     "description": descriptionController.text
                   };
                   Provider.of<TodoProvider>(context, listen: false).addTask(task);
+
+                  List<dynamic> todos = await Provider.of<TodoProvider>(context, listen: false).todoTasks;
+                  String jsonTodosStringified = jsonEncode(todos);
+                  SharedPref().saveTasksSharedPreference(jsonTodosStringified);
+
                   Navigator.pop(context);
                 },
                 color: Colors.black,

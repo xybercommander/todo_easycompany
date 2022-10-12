@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_easycompany/data/helper/shared_preferences.dart';
 import 'package:todo_easycompany/data/providers/todo_provider.dart';
 import 'package:todo_easycompany/views/add_todo.dart';
 
@@ -11,6 +14,21 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
+
+  getTasks() async {
+    String? myTasks = await SharedPref().getTasksSharedPreference();
+    var decodedTasks = jsonDecode(myTasks!);
+    Provider.of<TodoProvider>(context, listen: false).setTasks(decodedTasks);
+    setState(() {});
+  }
+
+  @override
+  void initState() {    
+    super.initState();
+    getTasks();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
