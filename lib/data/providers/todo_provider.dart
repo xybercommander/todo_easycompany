@@ -5,7 +5,7 @@ import 'package:todo_easycompany/data/helper/shared_preferences.dart';
 
 class TodoProvider extends ChangeNotifier {
   List<dynamic> _todoTasks = [];
-  List<dynamic> get todoTasks => _todoTasks;
+  List<dynamic> get todoTasks => _todoTasks;  
 
   void setTasks(List<dynamic> tasks) {
     _todoTasks = tasks;
@@ -45,4 +45,5 @@ class TodoProvider extends ChangeNotifier {
     _todoTasks.clear();
     notifyListeners();
   }
+
 }

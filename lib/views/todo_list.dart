@@ -15,21 +15,6 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-
-  getTasks() async {
-    String? myTasks = await SharedPref().getTasksSharedPreference();
-    var decodedTasks = jsonDecode(myTasks!);
-    Provider.of<TodoProvider>(context, listen: false).setTasks(decodedTasks);
-    setState(() {});
-  }
-
-  @override
-  void initState() {    
-    super.initState();
-    getTasks();    
-  }
-
-
   @override
   Widget build(BuildContext context) {    
     return Scaffold(
