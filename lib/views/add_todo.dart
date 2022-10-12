@@ -253,7 +253,8 @@ class _AddTodoState extends State<AddTodo> {
                         "setDate": setDate.toString(),
                         "toBeCompletedOn": toBeCompletedOn.toString(),
                         "priority": priority.toString(),
-                        "description": descriptionController.text
+                        "description": descriptionController.text,
+                        "completed": 0 // 0 -> No / 1 -> Yes
                       };
                       Provider.of<TodoProvider>(context, listen: false).addTask(task);
 

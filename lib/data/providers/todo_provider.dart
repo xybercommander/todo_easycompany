@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:todo_easycompany/data/helper/shared_preferences.dart';
 
 class TodoProvider extends ChangeNotifier {
   List<dynamic> _todoTasks = [];
@@ -11,6 +14,20 @@ class TodoProvider extends ChangeNotifier {
 
   void addTask(Map<String, dynamic> task) {
     _todoTasks.add(task);
+    notifyListeners();
+  }
+
+  void completeTask(int index) {
+    Map<String, dynamic> task = _todoTasks.elementAt(index);
+    task['completed'] = 1;
+    SharedPref().saveTasksSharedPreference(jsonEncode(_todoTasks));
+    notifyListeners();
+  }
+
+  void unCompleteTask(int index) {
+    Map<String, dynamic> task = _todoTasks.elementAt(index);
+    task['completed'] = 0;
+    SharedPref().saveTasksSharedPreference(jsonEncode(_todoTasks));
     notifyListeners();
   }
 
