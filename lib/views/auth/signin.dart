@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_easycompany/data/services/auth.dart';
+import 'package:todo_easycompany/data/services/database.dart';
+import 'package:todo_easycompany/views/auth/auth_fetch_page.dart';
 import 'package:todo_easycompany/views/auth/signup.dart';
 import 'package:todo_easycompany/views/todo_list.dart';
 
@@ -15,17 +18,17 @@ class _SignInPageState extends State<SignInPage> {
   //------ VARIABLES ------//
   bool showPassword = false;
   final _formKey = GlobalKey<FormState>();
-  // late Stream<QuerySnapshot> userStream;
+  late Stream<QuerySnapshot> userStream;
   
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _passwordTextEditingController = TextEditingController();
 
   AuthMethods authMethods = AuthMethods();
-  // DatabaseMethods databaseMethods = DatabaseMethods();
+  DatabaseMethods databaseMethods = DatabaseMethods();
 
   //------ METHODS ------//
   void signIn(context) async {
-    // userStream = await databaseMethods.getUserInfoByEmail(_emailTextEditingController.text); 
+    userStream = await databaseMethods.getUserInfoByEmail(_emailTextEditingController.text); 
     authMethods.signInWithEmailAndPassword(_emailTextEditingController.text, _passwordTextEditingController.text)
       .then((value) { 
         if(value == null) {
@@ -44,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
             }
           );
         } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TodoList()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthFetchPage(userStream: userStream,)));
         }               
       });                 
   }

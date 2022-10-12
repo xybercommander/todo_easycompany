@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_easycompany/data/helper/shared_preferences.dart';
+import 'package:todo_easycompany/data/providers/user_provider.dart';
 import 'package:todo_easycompany/data/services/auth.dart';
+import 'package:todo_easycompany/data/services/database.dart';
 import 'package:todo_easycompany/views/auth/signin.dart';
 import 'package:todo_easycompany/views/todo_list.dart';
 
@@ -16,23 +20,27 @@ class _SignUpPageState extends State<SignUpPage> {
   bool showPassword = false;
   final _formKey = GlobalKey<FormState>();
   
+  TextEditingController _nameTextEditingController = TextEditingController();
   TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _passwordTextEditingController = TextEditingController();
 
-  AuthMethods authMethods = AuthMethods();  
+  AuthMethods authMethods = AuthMethods(); 
+  DatabaseMethods databaseMethods = DatabaseMethods(); 
 
   //------ METHODS ------//
   void signUp() async {
     authMethods.signUpWithEmailAndPassword(_emailTextEditingController.text, _passwordTextEditingController.text)
       .then((value) {        
         Map<String, dynamic> userMap = {
+          "name": _nameTextEditingController.text,
           "email": _emailTextEditingController.text,
         };
-        // databaseMethods.uploadUserInfo(userMap);        
+        databaseMethods.uploadUserInfo(userMap);
+        Provider.of<UserProvider>(context, listen: false).setName(_nameTextEditingController.text);
+        Provider.of<UserProvider>(context, listen: false).setEmail(_emailTextEditingController.text);
         // SharedPref.saveLoggedInSharedPreference(true);
         // SharedPref.saveEmailSharedPreference(_emailTextEditingController.text);
-        // SharedPref.saveUsernameSharedPreference(_usernameTextEditingController.text);
-        // SharedPref.saveImgUrlSharedPreference(imgUrl != '' ? imgUrl : '');
+        // SharedPref.saveNameSharedPreference(_nameTextEditingController.text);        
         
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TodoList()));
       });
@@ -62,6 +70,25 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Column(
                       children: [
                         SizedBox(height: 24,),
+                        TextFormField(
+                          controller: _nameTextEditingController,
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                          cursorColor: Colors.black,
+                          decoration: InputDecoration(
+                            labelText: "Name",
+                            labelStyle: TextStyle(color: Colors.black, fontSize: 14),                            
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5), 
+                              borderSide: BorderSide(color: Colors.black, width: 2.5)
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5), 
+                              borderSide: BorderSide(color: Colors.black, width: 2.5)
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12,),
                         TextFormField(
                           controller: _emailTextEditingController,
                           style: TextStyle(color: Colors.black, fontSize: 13),
