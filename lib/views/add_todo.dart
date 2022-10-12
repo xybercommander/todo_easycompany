@@ -257,6 +257,7 @@ class _AddTodoState extends State<AddTodo> {
                         "completed": 0 // 0 -> No / 1 -> Yes
                       };
                       Provider.of<TodoProvider>(context, listen: false).addTask(task);
+                      Provider.of<TodoProvider>(context, listen: false).sortTaskByPriority();
 
                       List<dynamic> todos = await Provider.of<TodoProvider>(context, listen: false).todoTasks;
                       String jsonTodosStringified = jsonEncode(todos);

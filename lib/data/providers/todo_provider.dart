@@ -31,6 +31,16 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void sortTaskByPriority() {
+    _todoTasks.sort(((a, b) => int.parse(b['priority'].toString()).compareTo(int.parse(a['priority'].toString()))));    
+    notifyListeners();
+  }
+
+  void removeTask(int index) {
+    _todoTasks.removeAt(index);
+    notifyListeners();
+  }
+
   void clearTasks() {
     _todoTasks.clear();
     notifyListeners();
