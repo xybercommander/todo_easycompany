@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_easycompany/data/providers/todo_provider.dart';
-import 'package:todo_easycompany/data/providers/user_provider.dart';
 import 'package:todo_easycompany/views/add_todo.dart';
 
 class TodoList extends StatefulWidget {
@@ -15,8 +14,8 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer2<TodoProvider, UserProvider>(
-        builder: (context, TodoProvider todoProvider, UserProvider userProvider, _) {
+      body: Consumer<TodoProvider>(
+        builder: (context, TodoProvider todoProvider, _) {
           return Container(
             padding: EdgeInsets.symmetric(vertical: 32, horizontal: 32),
             width: MediaQuery.of(context).size.width,
@@ -27,7 +26,7 @@ class _TodoListState extends State<TodoList> {
                 if(index == 0) {
                   return Container(
                     child: Text(
-                      "Hi ${userProvider.name}!\nThese are your Todos",
+                      "Hi! These are your Todos",
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   );
